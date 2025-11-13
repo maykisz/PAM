@@ -1,0 +1,9 @@
+{
+  "short_name": "Spotify Clone",
+  "name": "Spotify Clone with React & TailwindCSS",
+  "icons": [],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
