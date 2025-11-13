@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base{
+    html, body, #root {
+        @apply h-full bg-backdrop text-white antialiased
+    }
+    #root {
+        @apply flex flex-col;
+    }
+    .wrapper {
+        height: calc(100% - theme('spacing.24'));
+        @apply flex;
+    }
+    .active {
+        @apply !text-white;
+    }
+    .transition-button{
+        @apply transition ease-in-out delay-100 duration-300 hover:scale-150 hover:bg-gradient-to-r from-green-600 to-primary
+    }
+    ::-webkit-scrollbar{
+        @apply w-4
+    }
+    ::-webkit-scrollbar-track{
+        @apply bg-transparent
+    }
+    ::-webkit-scrollbar-thumb{
+        @apply bg-scroll hover:bg-scrollHover
+    }
+     
+}
