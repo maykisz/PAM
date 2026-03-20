@@ -106,7 +106,7 @@ export const developers = [
   },
   {
     id: "5",
-    name: "Gabriel ??????? ",
+    name: "Gabriel Gustavo Batista de Oliveira Santos",
     role: "Desenvolvedor Front-end",
     image: require("../images/Foto de Perfil/EduKof.png"),
   },
