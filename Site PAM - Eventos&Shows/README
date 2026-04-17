@@ -5,3 +5,5 @@ tem que abrir dois terminais, um pro back e outro pro front.
 
 2-terminal
 => cd backend; npm install; npm run dev
+
+npx expo install lucide-react-native moti react-native-reanimated react-native-gesture-handler

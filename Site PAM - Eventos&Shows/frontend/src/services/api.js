@@ -9,7 +9,7 @@ const API = axios.create({
 
 // Envia as credenciais para o backend e recebe o token JWT.
 export async function loginUser(email, password) {
-  return API.post('/auth/login', { email, password });
+  return API.post('/auth/login', { email: email.trim(), password });
 }
 
 // Envia os dados do cadastro completo para o backend.

@@ -1,5 +1,5 @@
 const express = require('express');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const Joi = require('joi');
 const db = require('../db');
@@ -122,7 +122,8 @@ router.post('/login', async (req, res) => {
     // Gera JWT curto para ser usado pelo frontend nas chamadas autenticadas.
     const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '7d' });
 
-    return res.json({ token });
+    // Por enquanto o backend considera o perfil completo após login.
+    return res.json({ token, isProfileComplete: true });
   } catch (err) {
     console.error('Erro no login:', err);
     return res.status(500).json({ message: 'Erro interno no servidor.' });

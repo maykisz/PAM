@@ -4,6 +4,7 @@ import LoginScreen from '../screens/LoginScreen';
 import RegisterStep1Screen from '../screens/RegisterStep1Screen';
 import HomeScreen from '../screens/HomeScreen';
 import RegisterStep2Screen from '../screens/RegisterStep2Screen';
+import OnboardingWizard from '../screens/OnboardingWizard';
 
 const Stack = createNativeStackNavigator();
 
@@ -11,11 +12,12 @@ const Stack = createNativeStackNavigator();
 // Cada tela pode navegar para outra usando os nomes registrados aqui.
 export default function AppNavigator() {
   return (
-    <Stack.Navigator initialRouteName="Login">
+    <Stack.Navigator initialRouteName="HomeScreen">
+      <Stack.Screen name="HomeScreen" component={HomeScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="RegisterStep1" component={RegisterStep1Screen} />
-      <Stack.Screen name="HomeScreen" component={HomeScreen} />
       <Stack.Screen name="RegisterStep2" component={RegisterStep2Screen} />
+      <Stack.Screen name="OnboardingWizard" component={OnboardingWizard} />
     </Stack.Navigator>
   );
 }

@@ -26,6 +26,14 @@ app.get('/', (req, res) => {
 });
 
 // Inicia o servidor HTTP na porta configurada.
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`Backend rodando em http://localhost:${port}`);
+});
+
+server.on('error', (error) => {
+  if (error.code === 'EADDRINUSE') {
+    console.error(`Porta ${port} já está em uso. Pare o processo existente ou defina PORT em .env para outra porta.`);
+    process.exit(1);
+  }
+  throw error;
 });

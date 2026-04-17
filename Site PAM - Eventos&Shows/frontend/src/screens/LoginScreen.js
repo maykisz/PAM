@@ -1,6 +1,16 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Alert, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
-import { Ionicons } from '@expo/vector-icons'; // Ícones do Expo para o botão de exibir/ocultar senha
+import { 
+  View, 
+  Text, 
+  TextInput, 
+  TouchableOpacity, 
+  Alert, 
+  KeyboardAvoidingView, 
+  Platform, 
+  ScrollView, 
+  ActivityIndicator 
+} from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import styles from './styles/login/LoginStyles';
 import { loginUser } from '../services/api';
 
@@ -8,35 +18,75 @@ export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  // Validação básica e chamada à API de login.
+  // 1. Lógica para o botão de Login Tradicional (E-mail/Senha)
   const handleLogin = async () => {
+    if (!email || !password) {
+      return Alert.alert('Atenção', 'Preencha e-mail e senha.');
+    }
+
+    setLoading(true);
     try {
-      if (!email || !password) {
-        return Alert.alert('Atenção', 'Preencha e-mail e senha.');
+      // Chama sua API de autenticação
+      const response = await loginUser(email, password);
+      
+      const profileComplete = response.data.isProfileComplete ?? true;
+      if (response.data?.token && profileComplete) {
+        Alert.alert('Sucesso', 'Bem-vindo ao Vortez.ai!');
+        navigation.replace('HomeScreen');
+      } else if (response.data?.token) {
+        navigation.navigate('OnboardingWizard');
+      } else {
+        throw new Error('Resposta inválida do servidor.');
       }
-
-      // Envia os dados para a API de autenticação.
-      await loginUser(email, password);
-      Alert.alert('Sucesso', 'Login realizado com sucesso!');
-
-      // Se desejar, redirecione o usuário para a tela principal:
-      // navigation.replace('Home');
     } catch (error) {
       const message = error?.response?.data?.message || 'Não foi possível entrar.';
       Alert.alert('Erro', message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 2. Lógica Robusta para o Botão Google
+  const handleGoogleLogin = async () => {
+    setLoading(true);
+    try {
+      // Simulação da chamada ao seu serviço de Google Auth
+      // const googleResponse = await googleAuthService.signIn(); 
+      
+      // Simulação de verificação no seu banco de dados
+      // Aqui você enviaria o token do Google para o seu backend verificar
+      const mockApiCheck = {
+        existsInDb: true,
+        fieldsFilled: true, // Se false, redirecionaria para completar perfil
+      };
+
+      if (mockApiCheck.existsInDb) {
+        if (mockApiCheck.fieldsFilled) {
+          navigation.replace('HomeScreen');
+        } else {
+          navigation.navigate('OnboardingWizard');
+        }
+      } else {
+        Alert.alert("Conta não encontrada", "Deseja se cadastrar com este Google ID?");
+        navigation.navigate('RegisterStep1');
+      }
+    } catch (error) {
+      Alert.alert("Erro", "Falha na autenticação com o Google.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    // KeyboardAvoidingView evita que o teclado cubra os inputs
     <KeyboardAvoidingView 
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
       style={styles.container}
     >
       <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}>
         
-        {/* Cabeçalho com Logo e Texto */}
+        {/* Cabeçalho */}
         <View style={styles.header}>
           <Text style={styles.welcomeText}>Bem-vindo de volta</Text>
           <Text style={styles.instructionText}>Entre na sua conta para continuar</Text>
@@ -45,10 +95,20 @@ export default function LoginScreen({ navigation }) {
         {/* Card de Login */}
         <View style={styles.loginCard}>
           
-          {/* Botão Google (Opcional, mas estava na imagem) */}
-          <TouchableOpacity style={styles.googleButton}>
-            <Ionicons name="logo-google" size={20} color="#FFF" />
-            <Text style={styles.googleButtonText}>Entrar com Google</Text>
+          {/* Botão Google Refatorado */}
+          <TouchableOpacity 
+            style={[styles.googleButton, loading && { opacity: 0.7 }]} 
+            onPress={handleGoogleLogin}
+            disabled={loading}
+          >
+            {loading ? (
+              <ActivityIndicator color="#FFF" />
+            ) : (
+              <>
+                <Ionicons name="logo-google" size={20} color="#FFF" style={{ marginRight: 10 }} />
+                <Text style={styles.googleButtonText}>Entrar com Google</Text>
+              </>
+            )}
           </TouchableOpacity>
 
           <View style={styles.dividerContainer}>
@@ -94,9 +154,17 @@ export default function LoginScreen({ navigation }) {
             </View>
           </View>
 
-          {/* Botão de Entrar */}
-          <TouchableOpacity style={styles.loginButton} onPress={() => navigation.navigate('HomeScreen')}>
-            <Text style={styles.loginButtonText}>Entrar</Text>
+          {/* Botão de Entrar Principal */}
+          <TouchableOpacity 
+            style={[styles.loginButton, loading && { backgroundColor: '#ccc' }]} 
+            onPress={handleLogin}
+            disabled={loading}
+          >
+            {loading ? (
+              <ActivityIndicator color="#FFF" />
+            ) : (
+              <Text style={styles.loginButtonText}>Entrar</Text>
+            )}
           </TouchableOpacity>
         </View>
 
