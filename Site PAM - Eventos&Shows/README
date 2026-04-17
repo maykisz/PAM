@@ -1,7 +1,0 @@
-tem que abrir dois terminais, um pro back e outro pro front.
-
-1-terminal
-=> cd frontend; npm install; npx expo start
-
-2-terminal
-=> cd backend; npm install; npm run dev
