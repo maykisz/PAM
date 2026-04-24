@@ -9,17 +9,28 @@ import {
   KeyboardAvoidingView, 
   Platform 
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons'; // Certifique-se de ter o expo-icons instalado
 import styles from './styles/cadastro/Register1Styles';
 
-// 1. MOVA O INPUTFIELD PARA FORA DA FUNÇÃO PRINCIPAL
-const InputField = ({ label, ...props }) => (
+// Componente de Input atualizado com ícones (conforme a imagem)
+const InputField = ({ icon, label, isPassword, showPassword, togglePassword, ...props }) => (
   <View style={styles.inputContainer}>
-    <Text style={styles.inputLabel}>{label}</Text>
+    <Ionicons name={icon} size={20} color="#9CA3AF" style={styles.inputIcon} />
     <TextInput 
       style={styles.inputField} 
       placeholderTextColor="#9CA3AF" 
+      secureTextEntry={isPassword && !showPassword}
       {...props} 
     />
+    {isPassword && (
+      <TouchableOpacity onPress={togglePassword}>
+        <Ionicons 
+          name={showPassword ? "eye-outline" : "eye-off-outline"} 
+          size={20} 
+          color="#9CA3AF" 
+        />
+      </TouchableOpacity>
+    )}
   </View>
 );
 
@@ -29,16 +40,17 @@ export default function RegisterStep1Screen({ navigation }) {
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [showPass, setShowPass] = useState(false);
+  const [showConfirmPass, setShowConfirmPass] = useState(false);
 
   const handleNext = () => {
     if (!name || !email || !phone || !password || !confirmPassword) {
       return Alert.alert('Atenção', 'Por favor, preencha todos os campos.');
     }
-
-    if (password.length < 8) {
-      return Alert.alert('Atenção', 'A senha deve ter ao menos 8 caracteres.');
+    if (!acceptedTerms) {
+      return Alert.alert('Atenção', 'Você precisa aceitar os Termos de Uso.');
     }
-
     if (password !== confirmPassword) {
       return Alert.alert('Atenção', 'As senhas precisam ser iguais.');
     }
@@ -50,79 +62,102 @@ export default function RegisterStep1Screen({ navigation }) {
   return (
     <KeyboardAvoidingView 
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
-      style={{ flex: 1 }}
+      style={{ flex: 1, backgroundColor: '#FFF' }}
     >
       <ScrollView 
         contentContainerStyle={styles.container}
         showsVerticalScrollIndicator={false}
-        keyboardShouldPersistTaps="handled" // Dica extra: ajuda no clique em botões com teclado aberto
       >
-        <View style={styles.header}>
-          <Text style={styles.title}>Cadastro Seguro</Text>
-          <Text style={styles.instructionText}>
-            Preencha seus dados para criar sua conta.
-          </Text>
+        {/* Botão de Voltar */}
+        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+          <Ionicons name="arrow-back" size={24} color="#1F2937" />
+        </TouchableOpacity>
+
+        {/* Ícone de Check Azul */}
+        <View style={styles.logoContainer}>
+          <View style={styles.blueIcon}>
+            <Ionicons name="checkmark" size={40} color="#FFF" />
+          </View>
+          <Text style={styles.title}>Criar conta</Text>
+          <Text style={styles.subtitle}>Preencha os dados abaixo para começar</Text>
         </View>
 
-        <View style={styles.loginCard}>
-          <View style={styles.inputGroup}>
-            <InputField 
-              label="Nome completo"
-              placeholder="Ex: João Silva"
-              value={name}
-              onChangeText={setName}
-            />
+        <View style={styles.form}>
+          <InputField 
+            icon="person-outline"
+            placeholder="Nome completo"
+            value={name}
+            onChangeText={setName}
+          />
 
-            <InputField 
-              label="E-mail"
-              placeholder="seu@email.com"
-              keyboardType="email-address"
-              autoCapitalize="none"
-              value={email}
-              onChangeText={setEmail}
-            />
+          <InputField 
+            icon="mail-outline"
+            placeholder="E-mail"
+            keyboardType="email-address"
+            autoCapitalize="none"
+            value={email}
+            onChangeText={setEmail}
+          />
 
-            <InputField 
-              label="Telefone"
-              placeholder="(00) 00000-0000"
-              keyboardType="phone-pad"
-              value={phone}
-              onChangeText={text => setPhone(text.replace(/[^0-9]/g, ''))}
-            />
+          <InputField 
+            icon="call-outline"
+            placeholder="Telefone"
+            keyboardType="phone-pad"
+            value={phone}
+            onChangeText={setPhone}
+          />
 
-            <InputField 
-              label="Senha"
-              placeholder="Mínimo 8 caracteres"
-              secureTextEntry
-              value={password}
-              onChangeText={setPassword}
-            />
+          <InputField 
+            icon="lock-closed-outline"
+            placeholder="Senha"
+            isPassword
+            showPassword={showPass}
+            togglePassword={() => setShowPass(!showPass)}
+            value={password}
+            onChangeText={setPassword}
+          />
 
-            <InputField 
-              label="Confirmar Senha"
-              placeholder="Repita a senha"
-              secureTextEntry
-              value={confirmPassword}
-              onChangeText={setConfirmPassword}
-            />
+          <InputField 
+            icon="lock-closed-outline"
+            placeholder="Confirmar senha"
+            isPassword
+            showPassword={showConfirmPass}
+            togglePassword={() => setShowConfirmPass(!showConfirmPass)}
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
+          />
+
+          {/* Checkbox de Termos */}
+          <View style={styles.termsContainer}>
+            <TouchableOpacity 
+              style={[styles.checkbox, acceptedTerms && styles.checkboxChecked]} 
+              onPress={() => setAcceptedTerms(!acceptedTerms)}
+            >
+              {acceptedTerms && <Ionicons name="checkmark" size={14} color="#FFF" />}
+            </TouchableOpacity>
+            <Text style={styles.termsText}>
+              Eu aceito os <Text style={styles.linkText}>Termos de Uso</Text> e a <Text style={styles.linkText}>Política de Privacidade</Text>
+            </Text>
           </View>
 
           <TouchableOpacity 
-            style={styles.loginButton} 
+            style={styles.cadastrarButton} 
             onPress={handleNext}
-            activeOpacity={0.8}
           >
-            <Text style={styles.loginButtonText}>Próxima etapa</Text>
+            <Text style={styles.cadastrarButtonText}>Cadastrar</Text>
           </TouchableOpacity>
-        </View>
 
-        <View style={styles.footer}>
-          <Text style={styles.footerText}>Já possui uma conta?</Text>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Text style={styles.footerLink}>Entrar</Text>
-          </TouchableOpacity>
+          <View style={styles.footer}>
+            <Text style={styles.footerText}>Já tem uma conta? </Text>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <Text style={styles.footerLink}>Entrar</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </ScrollView>
+      
     </KeyboardAvoidingView>
+
+    
   );
 }

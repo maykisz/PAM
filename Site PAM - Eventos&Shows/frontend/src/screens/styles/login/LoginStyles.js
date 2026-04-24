@@ -1,168 +1,212 @@
-import { StyleSheet, Platform } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 
-const COLORS = {
-  background: '#F8F9FA', // Fundo levemente cinza para o card branco destacar
-  card: '#FFFFFF',       // Card puro branco
-  border: '#E1E4E8',     // Bordas finas e sutis
-  textPrimary: '#1A1A1A',// Quase preto para o texto principal
-  textSecondary: '#667085',// Cinza para rótulos e instruções
-  accent: '#000000',     // Preto sólido para o botão principal
-  inputBg: '#FFFFFF',    // Inputs brancos
-  textLink: '#000000',   // Links em preto sólido
-};
+const { width } = Dimensions.get('window');
+const BLUE_PRIMARY = '#2563EB'; // Azul vibrante da logo e botão
 
-const styles = StyleSheet.create({
+export default StyleSheet.create({
+  mainWrapper: {
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+  },
   container: {
     flex: 1,
-    backgroundColor: COLORS.background,
-    paddingHorizontal: 20,
   },
-  // Substituto da logo: um cabeçalho limpo
-  header: {
+  scrollContent: {
+    flexGrow: 1,
     alignItems: 'center',
-    marginTop: 80, // Espaço maior já que não tem logo
-    marginBottom: 40,
+    paddingHorizontal: 30,
+    paddingTop: 80,
+    paddingBottom: 40,
   },
-  welcomeText: {
-    fontSize: 26,
-    fontWeight: '600',
-    color: COLORS.textPrimary,
-    letterSpacing: -0.5,
+  /* --- LOGO --- */
+  logoWrap: {
+    alignItems: 'center',
+    marginBottom: 50,
   },
-  instructionText: {
-    fontSize: 15,
-    color: COLORS.textSecondary,
-    marginTop: 8,
-  },
-  
-  // Card centralizado
-  loginCard: {
-    backgroundColor: COLORS.card,
-    borderRadius: 20,
-    padding: 24,
-    width: '100%',
-    // Sombra suave para dar elevação
-    ...Platform.select({
-      ios: {
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 10 },
-        shadowOpacity: 0.05,
-        shadowRadius: 20,
-      },
-      android: {
-        elevation: 5,
-      },
-    }),
-  },
-
-  // Botão Google estilo "Outline"
-  googleButton: {
-    flexDirection: 'row',
-    height: 52,
-    backgroundColor: '#FFFFFF',
-    borderWidth: 1,
-    borderColor: COLORS.border,
-    borderRadius: 12,
+  logoIcon: {
+    width: 75,
+    height: 75,
+    borderRadius: 22,
+    backgroundColor: BLUE_PRIMARY,
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 12,
+    marginBottom: 15,
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
   },
-  googleButtonText: {
-    fontSize: 15,
-    color: COLORS.textPrimary,
-    fontWeight: '500',
+  logoText: {
+    fontSize: 34,
+    fontWeight: '700',
+    color: '#1F2937',
   },
-
-  dividerContainer: {
+  logoHighlight: {
+    color: BLUE_PRIMARY,
+  },
+  tagline: {
+    fontSize: 14,
+    color: '#6B7280',
+    marginTop: 6,
+  },
+  /* --- FORMULÁRIO --- */
+  formContainer: {
+    width: '100%',
+  },
+  inputGroup: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: 24,
+    backgroundColor: '#FAFAFA',
+    borderWidth: 1,
+    borderColor: '#F3F4F6',
+    borderRadius: 16,
+    height: 60,
+    paddingHorizontal: 18,
+    marginBottom: 16,
+  },
+  inputIcon: {
+    marginRight: 12,
+  },
+  input: {
+    flex: 1,
+    fontSize: 16,
+    color: '#1F2937',
+  },
+  /* --- OPÇÕES --- */
+  optionsRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 25,
+    paddingHorizontal: 4,
+  },
+  rememberBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  checkbox: {
+    width: 22,
+    height: 22,
+    borderRadius: 6,
+    borderWidth: 1.5,
+    borderColor: '#D1D5DB',
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 10,
+  },
+  checkboxChecked: {
+    backgroundColor: BLUE_PRIMARY,
+    borderColor: BLUE_PRIMARY,
+  },
+  rememberText: {
+    fontSize: 14,
+    color: '#6B7280',
+  },
+  forgotText: {
+    fontSize: 14,
+    color: BLUE_PRIMARY,
+    fontWeight: '600',
+  },
+  /* --- BOTÕES --- */
+  loginBtn: {
+    height: 60,
+    borderRadius: 16,
+    backgroundColor: BLUE_PRIMARY,
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 2,
+    shadowColor: BLUE_PRIMARY,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+  },
+  loginBtnDisabled: {
+    opacity: 0.6,
+  },
+  loginBtnText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '700',
+  },
+  /* --- DIVIDER --- */
+  dividerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 30,
   },
   dividerLine: {
     flex: 1,
     height: 1,
-    backgroundColor: COLORS.border,
+    backgroundColor: '#F3F4F6',
   },
   dividerText: {
+    paddingHorizontal: 15,
     fontSize: 13,
-    color: COLORS.textSecondary,
-    marginHorizontal: 16,
-    textTransform: 'uppercase',
+    color: '#9CA3AF',
   },
-
-  // Inputs
-  inputGroup: {
-    gap: 20,
+  /* --- SOCIAIS --- */
+  socialRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: 15,
   },
-  inputContainer: {
-    width: '100%',
-  },
-  inputLabel: {
-    fontSize: 14,
-    color: COLORS.textPrimary,
-    fontWeight: '500',
-    marginBottom: 8,
-  },
-  inputField: {
-    height: 52,
-    backgroundColor: COLORS.inputBg,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: COLORS.border,
-    paddingHorizontal: 16,
-    color: COLORS.textPrimary,
-    fontSize: 15,
-  },
-  passwordInputContainer: {
+  socialBtn: {
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    height: 52,
-    backgroundColor: COLORS.inputBg,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: COLORS.border,
-    paddingRight: 16,
-  },
-  passwordInput: {
-    flex: 1,
-    paddingHorizontal: 16,
-    color: COLORS.textPrimary,
-    fontSize: 15,
-  },
-
-  // Botão de Entrar Robusto
-  loginButton: {
-    height: 56,
-    backgroundColor: COLORS.accent,
-    borderRadius: 12,
-    alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 32,
+    height: 56,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: '#F3F4F6',
+    backgroundColor: '#FFFFFF',
+    gap: 10,
   },
-  loginButtonText: {
-    fontSize: 16,
-    color: '#FFFFFF',
+  socialBtnText: {
+    fontSize: 15,
     fontWeight: '600',
-    letterSpacing: 0.5,
+    color: '#1F2937',
   },
-
-  // Footer
+  /* --- FOOTER --- */
   footer: {
     flexDirection: 'row',
+    marginTop: 40,
     justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 32,
   },
   footerText: {
-    fontSize: 14,
-    color: COLORS.textSecondary,
+    fontSize: 15,
+    color: '#6B7280',
   },
   footerLink: {
-    fontSize: 14,
-    color: COLORS.textLink,
+    fontSize: 15,
+    color: BLUE_PRIMARY,
     fontWeight: '700',
-    marginLeft: 4,
+  },
+ /* --- ONDAS (CORRIGIDO) --- */
+  waveContainer: {
+    position: 'absolute', // Mudado de relative para absolute
+    bottom: 0,            // Cola no fundo da tela
+    left: 0,
+    right: 0,
+    height: 200,          // Altura fixa para o desenho
+    zIndex: -1,           // Garante que fique ATRÁS do texto e botões
+  },
+
+  waveBack: {
+    position: 'absolute',
+    bottom:-50,            // Ajustado para colar na base
+    left: 0,
+    width: '100%',
+    height: '100%',
+  },
+
+  waveFront: {
+    position: 'absolute',
+    bottom: -55,            // Ajustado para colar na base
+    left: 0,
+    width: '100%',
+    height: '100%',
   },
 });
-
-export default styles;

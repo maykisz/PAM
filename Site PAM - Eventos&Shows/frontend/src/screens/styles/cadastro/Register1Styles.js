@@ -1,156 +1,146 @@
 import { StyleSheet, Platform } from 'react-native';
 
 const COLORS = {
-  background: '#F9FAFB', // Off-white para profundidade
-  surface: '#FFFFFF',    // Branco puro para o Card
-  border: '#E5E7EB',     // Cinza neutro para divisórias e bordas
-  textPrimary: '#111827',// Preto "Onix" para legibilidade
-  textSecondary: '#6B7280',// Cinza para rótulos e descrição
-  buttonPrimary: '#000000',// Preto sólido (robusto)
-  inputBg: '#F3F4F6',    // Cinza bem claro para o fundo dos inputs
+  background: '#FFFFFF', // Fundo totalmente branco como na imagem
+  primary: '#2563EB',    // Azul vibrante do botão "Cadastrar"
+  border: '#E5E7EB',     // Cinza claro para as bordas dos inputs
+  textPrimary: '#1F2937',// Cinza escuro para títulos
+  textSecondary: '#6B7280',// Cinza médio para subtítulos e ícones
+  white: '#FFFFFF',
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     backgroundColor: COLORS.background,
+    paddingHorizontal: 24,
+    paddingTop: Platform.OS === 'ios' ? 60 : 40,
+    paddingBottom: 40,
+  },
+
+  // Botão de voltar no topo esquerdo
+  backButton: {
+    width: 40,
+    height: 40,
     justifyContent: 'center',
-    paddingHorizontal: 20,
-  },
-  // Cabeçalho limpo (substitui a logo)
-  header: {
-    alignItems: 'center',
-    marginBottom: 40,
-  },
-  welcomeText: {
-    fontSize: 28,
-    fontWeight: '600',
-    color: COLORS.textPrimary,
-    letterSpacing: -0.5,
-  },
-  instructionText: {
-    fontSize: 15,
-    color: COLORS.textSecondary,
-    marginTop: 6,
+    alignItems: 'flex-start',
+    marginBottom: 20,
   },
 
-  // Card central (O container robusto da imagem)
-  loginCard: {
-    backgroundColor: COLORS.surface,
-    borderRadius: 24,
-    padding: 28,
-    borderWidth: 1,
-    borderColor: COLORS.border,
-    ...Platform.select({
-      ios: {
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.03,
-        shadowRadius: 10,
-      },
-      android: {
-        elevation: 2,
-      },
-    }),
-  },
-
-  // Botão Google (estilo Outline profissional)
-  googleButton: {
-    flexDirection: 'row',
-    height: 52,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: COLORS.border,
+  // Container da Logo/Ícone Azul
+  logoContainer: {
     alignItems: 'center',
+    marginBottom: 32,
+  },
+  blueIcon: {
+    width: 80,
+    height: 80,
+    backgroundColor: COLORS.primary,
+    borderRadius: 20, // Cantos arredondados do ícone azul
     justifyContent: 'center',
-    gap: 12,
-  },
-  googleButtonText: {
-    fontSize: 15,
-    color: COLORS.textPrimary,
-    fontWeight: '500',
-  },
-
-  dividerContainer: {
-    flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: 24,
+    marginBottom: 16,
+    // Sombra leve para o ícone
+    shadowColor: COLORS.primary,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 5,
   },
-  dividerLine: {
-    flex: 1,
-    height: 1,
-    backgroundColor: COLORS.border,
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: COLORS.textPrimary,
+    marginBottom: 8,
   },
-  dividerText: {
-    fontSize: 12,
+  subtitle: {
+    fontSize: 14,
     color: COLORS.textSecondary,
-    marginHorizontal: 16,
-    textTransform: 'uppercase',
-    letterSpacing: 1,
+    textAlign: 'center',
   },
 
-  // Inputs robustos
-  inputGroup: {
-    gap: 18,
-  },
-  inputContainer: {
+  // Formulário
+  form: {
     width: '100%',
   },
-  inputLabel: {
-    fontSize: 13,
-    color: COLORS.textPrimary,
-    fontWeight: '600',
-    marginBottom: 8,
-    textTransform: 'uppercase', // Dá um ar mais técnico/robusto
-    letterSpacing: 0.5,
-  },
-  inputField: {
-    height: 54,
-    backgroundColor: COLORS.inputBg,
-    borderRadius: 12,
-    paddingHorizontal: 16,
-    fontSize: 15,
-    color: COLORS.textPrimary,
-    borderWidth: 1,
-    borderColor: 'transparent', // Fica visível apenas no focus se quiser
-  },
-  passwordInputContainer: {
+  inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    height: 54,
-    backgroundColor: COLORS.inputBg,
-    borderRadius: 12,
-    paddingRight: 16,
-  },
-  passwordInput: {
-    flex: 1,
+    height: 56,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+    borderRadius: 16, // Inputs bem arredondados conforme a imagem
     paddingHorizontal: 16,
+    marginBottom: 16,
+    backgroundColor: COLORS.white,
+  },
+  inputIcon: {
+    marginRight: 12,
+  },
+  inputField: {
+    flex: 1,
     fontSize: 15,
     color: COLORS.textPrimary,
   },
 
-  // Botão de Login principal
-  loginButton: {
-    height: 56,
-    backgroundColor: COLORS.buttonPrimary,
-    borderRadius: 12,
+  // Checkbox de Termos de Uso
+  termsContainer: {
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 32,
+    marginBottom: 30,
+    paddingRight: 10,
   },
-  loginButtonText: {
-    fontSize: 16,
-    color: '#FFFFFF',
+  checkbox: {
+    width: 22,
+    height: 22,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+    borderRadius: 6,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12,
+  },
+  checkboxChecked: {
+    backgroundColor: COLORS.primary,
+    borderColor: COLORS.primary,
+  },
+  termsText: {
+    fontSize: 12,
+    color: COLORS.textSecondary,
+    flex: 1,
+    lineHeight: 18,
+  },
+  linkText: {
+    color: COLORS.primary,
     fontWeight: '600',
-    letterSpacing: 0.3,
   },
 
-  // Rodapé
+  // Botão Cadastrar (Azul total)
+  cadastrarButton: {
+    height: 56,
+    backgroundColor: COLORS.primary,
+    borderRadius: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 24,
+    // Sombra para o botão principal
+    shadowColor: COLORS.primary,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+    elevation: 3,
+  },
+  cadastrarButtonText: {
+    color: COLORS.white,
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+
+  // Footer (Já tem conta? Entrar)
   footer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 40,
+    marginTop: 10,
   },
   footerText: {
     fontSize: 14,
@@ -158,10 +148,8 @@ const styles = StyleSheet.create({
   },
   footerLink: {
     fontSize: 14,
-    color: COLORS.textPrimary,
-    fontWeight: '700',
-    marginLeft: 6,
-    textDecorationLine: 'underline',
+    color: COLORS.primary,
+    fontWeight: 'bold',
   },
 });
 

@@ -1,100 +1,81 @@
 import { StyleSheet, Platform } from 'react-native';
 
-const COLORS = {
-  background: '#F9FAFB',
-  surface: '#FFFFFF',
-  border: '#E5E7EB',
-  textPrimary: '#111827',
-  textSecondary: '#6B7280',
-  buttonPrimary: '#000000',
-  inputBg: '#F3F4F6',
-};
-
-const styles = StyleSheet.create({
+export default StyleSheet.create({
   container: {
     flexGrow: 1,
-    backgroundColor: COLORS.background,
-    paddingHorizontal: 20,
-    paddingVertical: 40,
+    backgroundColor: '#FFFFFF',
+    paddingHorizontal: 24,
+    paddingTop: Platform.OS === 'ios' ? 60 : 40,
+    paddingBottom: 40,
   },
-  header: {
+  backButton: {
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+    marginBottom: 20,
+  },
+  logoContainer: {
     alignItems: 'center',
-    marginTop: 20,
     marginBottom: 32,
   },
+  blueIcon: {
+    width: 80,
+    height: 80,
+    backgroundColor: '#2563EB',
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
   title: {
-    fontSize: 26,
-    fontWeight: '600',
-    color: COLORS.textPrimary,
-    letterSpacing: -0.5,
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#1F2937',
+    marginBottom: 8,
   },
   subtitle: {
-    fontSize: 15,
-    color: COLORS.textSecondary,
-    marginTop: 8,
+    fontSize: 14,
+    color: '#6B7280',
     textAlign: 'center',
+    paddingHorizontal: 20,
   },
-  loginCard: {
-    backgroundColor: COLORS.surface,
-    borderRadius: 24,
-    padding: 24,
-    borderWidth: 1,
-    borderColor: COLORS.border,
-    ...Platform.select({
-      ios: {
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.04,
-        shadowRadius: 12,
-      },
-      android: {
-        elevation: 3,
-      },
-    }),
-  },
-  inputGroup: {
-    gap: 16,
-  },
-  inputContainer: {
+  form: {
     width: '100%',
   },
-  inputLabel: {
-    fontSize: 12,
-    color: COLORS.textPrimary,
-    fontWeight: '700',
-    marginBottom: 8,
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    height: 56,
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+    borderRadius: 16,
+    paddingHorizontal: 16,
+    marginBottom: 16,
+    backgroundColor: '#FFF',
+  },
+  inputIcon: {
+    marginRight: 12,
   },
   inputField: {
-    height: 52,
-    backgroundColor: COLORS.inputBg,
-    borderRadius: 12,
-    paddingHorizontal: 16,
+    flex: 1,
     fontSize: 15,
-    color: COLORS.textPrimary,
+    color: '#1F2937',
   },
-  // Estilo para campos lado a lado (como Número e Estado se quiser encurtar a tela)
   row: {
     flexDirection: 'row',
-    gap: 12,
+    justifyContent: 'space-between',
   },
-  flex1: {
-    flex: 1,
-  },
-  loginButton: {
+  cadastrarButton: {
     height: 56,
-    backgroundColor: COLORS.buttonPrimary,
-    borderRadius: 12,
-    alignItems: 'center',
+    backgroundColor: '#2563EB',
+    borderRadius: 16,
     justifyContent: 'center',
-    marginTop: 32,
+    alignItems: 'center',
+    marginTop: 20,
   },
-  loginButtonText: {
-    fontSize: 16,
+  cadastrarButtonText: {
     color: '#FFFFFF',
-    fontWeight: '600',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
-
-export default styles;
