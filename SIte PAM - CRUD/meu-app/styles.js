@@ -1,6 +1,40 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
+  loginContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: 24,
+    backgroundColor: '#e8eef7',
+  },
+  loginBox: {
+    width: '100%',
+    maxWidth: 420,
+    alignSelf: 'center',
+    padding: 24,
+    borderRadius: 12,
+    backgroundColor: '#ffffff',
+    shadowColor: '#0f172a',
+    shadowOpacity: 0.12,
+    shadowRadius: 16,
+    elevation: 4,
+    gap: 10,
+  },
+  loginTitle: {
+    color: '#0f172a',
+    fontSize: 30,
+    fontWeight: '800',
+  },
+  loginSubtitle: {
+    color: '#64748b',
+    marginBottom: 12,
+  },
+  loginError: {
+    color: '#b91c1c',
+    backgroundColor: '#fee2e2',
+    padding: 10,
+    borderRadius: 8,
+  },
   container: {
     flex: 1,
     backgroundColor: '#f4f6f8',

@@ -2,6 +2,11 @@ const db = require('../db');
 
 function registerGetRoutes(app) {
     app.get('/tasks', (req, res) => {
+        const userId = Number(req.headers['x-user-id']);
+        if (!userId) {
+            return res.status(401).json({ error: 'Usuario nao autenticado' });
+        }
+
         const query = `
             SELECT
                 t.idTarefa,
@@ -14,10 +19,11 @@ function registerGetRoutes(app) {
             FROM tbTarefa t
             LEFT JOIN tbDesenvolvedor d
                 ON d.idDesenvolvedor = t.idDesenvolvedor
+            WHERE t.idLogin = ?
             ORDER BY t.idTarefa DESC
         `;
 
-        db.query(query, (err, results) => {
+        db.query(query, [userId], (err, results) => {
             if (err) {
                 return res.status(500).json({
                     error: 'Erro ao listar tarefas',

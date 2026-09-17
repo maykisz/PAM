@@ -4,6 +4,11 @@ function registerPutRoutes(app) {
     app.put('/tasks/:id', (req, res) => {
         const { id } = req.params;
         const { titulo, descricao, status, idDesenvolvedor } = req.body;
+        const userId = Number(req.headers['x-user-id']);
+
+        if (!userId) {
+            return res.status(401).json({ error: 'Usuario nao autenticado' });
+        }
 
         if (!titulo || !descricao || !status || !idDesenvolvedor) {
             return res.status(400).json({
@@ -14,10 +19,10 @@ function registerPutRoutes(app) {
         const query = `
             UPDATE tbTarefa
             SET titulo = ?, descricao = ?, status = ?, idDesenvolvedor = ?
-            WHERE idTarefa = ?
+            WHERE idTarefa = ? AND idLogin = ?
         `;
 
-        db.query(query, [titulo, descricao, status, idDesenvolvedor, id], (err, result) => {
+        db.query(query, [titulo, descricao, status, idDesenvolvedor, id, userId], (err, result) => {
             if (err) {
                 return res.status(500).json({
                     error: 'Erro ao atualizar tarefa',

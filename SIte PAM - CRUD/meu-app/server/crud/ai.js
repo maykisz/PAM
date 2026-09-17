@@ -1,8 +1,8 @@
 const OpenAI = require('openai');
 
-const client = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY
-});
+const client = process.env.OPENAI_API_KEY
+    ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+    : null;
 
 function registerAiRoutes(app) {
     app.post('/ai/task-description', async (req, res) => {

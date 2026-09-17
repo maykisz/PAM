@@ -11,6 +11,7 @@ import TaskModal from './components/TaskModal';
 import { API_URL, emptyTaskForm } from './constants';
 import CreateTaskScreen from './screens/CreateTaskScreen';
 import DevelopersScreen from './screens/DevelopersScreen';
+import LoginScreen from './screens/LoginScreen';
 import TasksScreen from './screens/TasksScreen';
 import styles from './styles';
 
@@ -25,16 +26,38 @@ export default function App() {
   const [editingTaskId, setEditingTaskId] = useState(null);
   const [taskForm, setTaskForm] = useState(emptyTaskForm);
   const [message, setMessage] = useState('');
+  const [user, setUser] = useState(null);
+  const [loginLoading, setLoginLoading] = useState(false);
+  const [loginError, setLoginError] = useState('');
 
   useEffect(() => {
-    loadData();
-  }, []);
+    if (user) {
+      loadData();
+    }
+  }, [user]);
+
+  const authConfig = () => ({
+    headers: { 'x-user-id': String(user.idLogin) },
+  });
+
+  const login = async (email, senha) => {
+    try {
+      setLoginLoading(true);
+      setLoginError('');
+      const response = await axios.post(`${API_URL}/login`, { email, senha });
+      setUser(response.data);
+    } catch (error) {
+      setLoginError(error.response?.data?.error || 'Nao foi possivel entrar.');
+    } finally {
+      setLoginLoading(false);
+    }
+  };
 
   const loadData = async () => {
     try {
       setLoading(true);
       const [tasksResponse, developersResponse] = await Promise.all([
-        axios.get(`${API_URL}/tasks`),
+        axios.get(`${API_URL}/tasks`, authConfig()),
         axios.get(`${API_URL}/developers`),
       ]);
 
@@ -99,9 +122,9 @@ export default function App() {
         await axios.put(`${API_URL}/tasks/${editingTaskId}`, {
           ...payload,
           status: taskForm.status || 'pendente',
-        });
+        }, authConfig());
       } else {
-        await axios.post(`${API_URL}/tasks`, payload);
+        await axios.post(`${API_URL}/tasks`, payload, authConfig());
       }
 
       setMessage(editingTaskId ? 'Tarefa alterada com sucesso.' : 'Tarefa criada com sucesso.');
@@ -153,7 +176,7 @@ export default function App() {
 
     try {
       setMessage('');
-      await axios.delete(`${API_URL}/tasks/${task.idTarefa}`);
+      await axios.delete(`${API_URL}/tasks/${task.idTarefa}`, authConfig());
       setMessage('Tarefa apagada com sucesso.');
       await loadData();
     } catch (error) {
@@ -161,6 +184,10 @@ export default function App() {
       console.error('Erro ao apagar tarefa:', error);
     }
   };
+
+  if (!user) {
+    return <LoginScreen error={loginError} loading={loginLoading} onLogin={login} />;
+  }
 
   const renderPage = () => {
     if (page === 'create') {
@@ -206,6 +233,7 @@ export default function App() {
         <NavButton label="Criar" page={page} targetPage="create" onPress={setPage} />
         <NavButton label="Tarefas" page={page} targetPage="tasks" onPress={setPage} />
         <NavButton label="Dev" page={page} targetPage="developers" onPress={setPage} />
+        <NavButton label="Sair" page={page} targetPage="logout" onPress={() => setUser(null)} />
       </View>
 
       {message ? <Text style={styles.message}>{message}</Text> : null}

@@ -3,8 +3,13 @@ const db = require('../db');
 function registerDeleteRoutes(app) {
     app.delete('/tasks/:id', (req, res) => {
         const { id } = req.params;
+        const userId = Number(req.headers['x-user-id']);
 
-        db.query('DELETE FROM tbTarefa WHERE idTarefa = ?', [id], (err, result) => {
+        if (!userId) {
+            return res.status(401).json({ error: 'Usuario nao autenticado' });
+        }
+
+        db.query('DELETE FROM tbTarefa WHERE idTarefa = ? AND idLogin = ?', [id, userId], (err, result) => {
             if (err) {
                 return res.status(500).json({
                     error: 'Erro ao apagar tarefa',

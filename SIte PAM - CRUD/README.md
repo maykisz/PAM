@@ -45,16 +45,26 @@ OPENAI_MODEL=gpt-4.1-mini
 
 Para usar o botao `IA sugere descricao`, preencha `OPENAI_API_KEY` no `.env`.
 
+No AlwaysData, selecione no Workbench o banco configurado em `DB_NAME` antes de executar `server/schema.sql`. O script nao cria nem troca de banco automaticamente.
+
 Crie o banco pelo terminal do XAMPP:
 
 ```bash
 Get-Content "server\schema.sql" | C:\xampp\mysql\bin\mysql.exe -u root
 ```
 
-Esse script cria:
-
-- `tbDesenvolvedor`
-- `tbTarefa`
+ Esse script cria:
+ 
+ - `tbDesenvolvedor`
+ - `tbTarefa`
+ - `tbLogin`
+ 
+ O login inicial usa estas contas:
+ 
+ ```text
+ maykon1@gmail.com / 12345
+ pedro1@gmail.com / 12345
+ ```
 
 ## Rodar a API
 
@@ -62,11 +72,12 @@ Esse script cria:
 npm run api
 ```
 
-Rota da API:
-
-```text
-http://localhost:3000/tasks
-http://localhost:3000/developers
+ Rota da API:
+ 
+ ```text
+ http://localhost:3000/tasks
+ http://localhost:3000/developers
+ POST   /login
 ```
 
 Rotas de tarefas:

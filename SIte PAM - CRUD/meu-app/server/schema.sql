@@ -1,7 +1,3 @@
-create database if not exists bdTeste;
-
-use bdTeste;
-
 create table if not exists tbDesenvolvedor(
     idDesenvolvedor int primary key auto_increment,
     nomeDesenvolvedor varchar(80) not null,
@@ -18,8 +14,24 @@ create table if not exists tbTarefa(
     status varchar(30) not null default 'pendente',
     dataCriacao timestamp not null default current_timestamp,
     idDesenvolvedor int not null,
+    idLogin int,
     foreign key (idDesenvolvedor) references tbDesenvolvedor(idDesenvolvedor)
 );
+
+create table if not exists tbLogin(
+    idLogin int primary key auto_increment,
+    email varchar(120) not null unique,
+    senha varchar(255) not null
+);
+
+alter table tbTarefa
+    add column if not exists idLogin int;
+
+insert into tbLogin (email, senha)
+values
+    ('maykon1@gmail.com', '12345'),
+    ('pedro1@gmail.com', '12345')
+on duplicate key update senha = values(senha);
 
 alter table tbDesenvolvedor
     add column if not exists githubUrl varchar(160);
@@ -138,6 +150,15 @@ where d.emailDesenvolvedor = 'pedro@teste.com'
 and not exists (
     select 1 from tbTarefa where titulo = 'Configurar API'
 );
+
+update tbTarefa t
+join tbDesenvolvedor d on d.idDesenvolvedor = t.idDesenvolvedor
+join tbLogin l on l.email = case
+    when d.emailDesenvolvedor in ('maykon@teste.com', 'maykon1@gmail.com') then 'maykon1@gmail.com'
+    when d.emailDesenvolvedor in ('pedro@teste.com', 'pedro1@gmail.com') then 'pedro1@gmail.com'
+end
+set t.idLogin = l.idLogin
+where t.idLogin is null;
 
 select * from tbDesenvolvedor;
 select * from tbTarefa;
